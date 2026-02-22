@@ -61,7 +61,7 @@ void display(int grid[9][9]){
 }
 
 int main(){
-    int grid0[9][9] = {
+    int grid[9][9] = {
         {1, 0, 0, 0, 2, 0, 0, 0, 0},
         {0, 0, 0, 0, 8, 0, 6, 0, 0},
         {0, 6, 0, 4, 0, 0, 8, 1, 2},
@@ -73,11 +73,11 @@ int main(){
         {0, 0, 0, 0, 3, 0, 0, 0, 8}};
 
     cout<<"Unsolved Puzzle :\n";
-    display(grid0);
+    display(grid);
 
-    if(solve(grid0)){
+    if(solve(grid)){
         cout<<"The solved Sudoku puzzle is:\n";
-        display(grid0);
+        display(grid);
     } else {
         cout<<"The sudoku puzzle can't be solved";
     }

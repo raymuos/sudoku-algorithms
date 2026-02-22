@@ -15,7 +15,7 @@ using namespace std;
 |                  (Returns the number of solutions, if its > 1 then it's 2).                              |
 |                                                                                                          |
 |void removeNums() : Removes numbers from randomized squares and checks number of solutions at each step.  |
-|                    If solution count > 1, then it's convntionally unsolvable by humans,                  |
+|                    If solution count > 1, then it's conventionally unsolvable by humans,                  |
 |                    and so we restart with another random order.                                          |
 +---------------------------------------------------------------------------------------------------------*/
 
@@ -163,7 +163,7 @@ int main(){
         {0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    int difficultyFactor = 35;
+    int difficultyFactor = 50;
     // Maximum value of df = 50
 
     if (generate(grid0)) display(grid0);
