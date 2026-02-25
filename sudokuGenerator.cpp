@@ -15,7 +15,7 @@ using namespace std;
 |                  (Returns the number of solutions, if its > 1 then it's 2).                              |
 |                                                                                                          |
 |void removeNums() : Removes numbers from randomized squares and checks number of solutions at each step.  |
-|                    If solution count > 1, then it's conventionally unsolvable by humans,                  |
+|                    If solution count > 1, then it's conventionally unsolvable by humans,                 |
 |                    and so we restart with another random order.                                          |
 +---------------------------------------------------------------------------------------------------------*/
 
