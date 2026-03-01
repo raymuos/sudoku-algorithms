@@ -7,6 +7,21 @@
 #include <chrono> // time based seeding
 using namespace std;
 
+/*----------------------------[FUNCTIONS INVOLVED IN THE SUDOKUGEN V3 ENGINE]------------------------------+
++ void toggle(index, number) : If index square is empty, then index is filled with number in the grid[] and 
+the other 3 bitmapped arrays (rows, columns and boxes). Conversely, if index square is full, the index is 
+emptied in all 4 arrays.                                                                     
+
++ int solve(index, count, limit, isRandom) : The penultimate solver, generator and counter function. If       
+limit = 1, then no counting involved and grid is altered, if limit = 2 then we count solutions and
+don't alter the grid. isRandom = True for generating, False for solving and counting. Returns count value.                    
+                                                                                                          
++ void removeNums(df) : Removes numbers from randomized squares and checks number of solutions 
+at each step. Number of holes is set to be exactly equal to df value (difficulty factor). 
+The loop runs again and again, through a randomized array of indices till the required number of holes
+is achieved.                                          
+----------------------------------------------------------------------------------------------------------*/
+
 class SudokuEngine {
     int grid[81], rows[9], cols[9], boxes[9];
     mt19937 rng; // yea we store the rng as an object property
@@ -36,9 +51,12 @@ class SudokuEngine {
             if(!((rows[i / 9] & digit) || (cols[i % 9] & digit) || (boxes[bi] & digit))){
                 toggle(i, num);
                 count = solve(i + 1, count, limit, isRandom);
-                
+
+                if(limit > 1) toggle(i, num); //this activates when we are counting solutions
+
                 if(count >= limit) return count;
-                toggle(i, num);
+
+                if(limit == 1) toggle(i, num); //this activates when we are generating or solving puzzles
             }
         }
         return count;
@@ -46,13 +64,12 @@ class SudokuEngine {
 
     void removeNums(int df = 35){
         vector<int> cells(81);
-        iota(cells.begin(), cells.end(), 0);
+        iota(cells.begin(), cells.end(), 0); //fills the vector array with 0 - 80
         shuffle(cells.begin(), cells.end(), rng);
 
         int holes = 0, i = 0;
 
         while(holes < df){
-            // cout << i << " ";
             if(i > 80){
                 i = 0;
                 shuffle(cells.begin(), cells.end(), rng);
@@ -60,12 +77,16 @@ class SudokuEngine {
 
             int idx = cells[i];
             int temp = grid[idx];
+            if(temp == 0){
+                i++;
+                continue;
+            }
             toggle(idx, temp);
 
             int count = solve(0, 0, 2, false);
+
             if (count != 1) toggle(idx, temp);
             else holes++;
-            // cout << i << " ";
             i++;
         }
 
@@ -78,7 +99,7 @@ class SudokuEngine {
             if(i % 3 == 0) cout<<"| ";
 
             if(grid[i]) cout << grid[i] << " ";
-            else cout<<"  ";
+            else cout<<". ";
             if ((i + 1) % 9 == 0) cout<<"|\n";
         }
         cout<<"+-------+-------+-------+\n";
@@ -97,7 +118,6 @@ public:
 
     void generate(int difficulty = 35) { // I expect a fuckin empty grid here okay?
         solve(0, 0, 1, true);
-        display();
         removeNums(difficulty);
 
         display();
@@ -111,7 +131,10 @@ public:
 
 int main(){
     SudokuEngine grid01;
-    grid01.generate();
+    grid01.generate(50);
 
-    grid01.solvePuzzle();
+    int res;
+    cout << "Press 0 to get the solution (any other number to quit): ";
+    cin >> res;
+    if(res == 0) grid01.solvePuzzle();
 }
